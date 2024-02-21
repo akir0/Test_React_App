@@ -1,5 +1,6 @@
-import './App.css'
+import './styles/App.css'
 import Counter from './components/Counter'
+import PostItem from './components/PostItem'
 
 function App() {
 
@@ -7,6 +8,7 @@ function App() {
     <>
       <div>
         <Counter></Counter>
+        <PostItem post={{id:1, title: 'Javascript', body: 'Description'}}/>
       </div>
     </>
   )
