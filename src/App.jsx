@@ -8,6 +8,7 @@ import MyInput from "./components/UI/input/MyInput";
 import PostForm from "./components/PostForm";
 import MySelect from "./components/UI/select/MySelect";
 import PostFilter from "./components/PostFilter";
+import MyModal from "./components/UI/MyModal/MyModal";
 
 function App() {
   const [posts, setPosts] = useState([
@@ -16,7 +17,8 @@ function App() {
     { id: 3, title: "Post 3c", body: "Description 3g" },
   ]);
 
-const [filter, setFilter] = useState({sort: '', query: ''})
+  const [filter, setFilter] = useState({ sort: "", query: "" });
+  const [modal, setModal] = useState(false);
 
   const sortedPosts = useMemo(() => {
     console.log("func worked");
@@ -36,6 +38,7 @@ const [filter, setFilter] = useState({sort: '', query: ''})
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost]);
+    setModal(false);
   };
 
   const removePost = (post) => {
@@ -47,15 +50,17 @@ const [filter, setFilter] = useState({sort: '', query: ''})
       <div className="App">
         <Counter />
         <PostItem post={{ id: 1, title: "Javascript", body: "Description" }} />
-
+        <MyButton style={{marginTop: 30}} onClick={() => setModal(true)}>Create user post</MyButton>
+        <MyModal visible={modal} setVisible={setModal}>
         <PostForm create={createPost} />
+        </MyModal>
         <hr style={{ margin: "15px 0" }} />
         <PostFilter filter={filter} setFilter={setFilter} />
         <PostList
-            remove={removePost}
-            posts={sortedAndSearchedPosts}
-            title="Post List 1"
-          />
+          remove={removePost}
+          posts={sortedAndSearchedPosts}
+          title="Post List 1"
+        />
       </div>
     </>
   );
