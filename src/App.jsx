@@ -12,6 +12,8 @@ import MyModal from "./components/UI/MyModal/MyModal";
 import {CSSTransition, TransitionGroup} from "react-transition-group"
 import { usePosts } from "./hooks/usePosts";
 import axios from 'axios'
+import PostService from "./API/PostService";
+import Loader from "./components/UI/Loader/Loader";
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -19,6 +21,7 @@ function App() {
   const [filter, setFilter] = useState({ sort: "", query: "" });
   const [modal, setModal] = useState(false);
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
+  const [isPostsLoading, setIsPostsLoading] = useState(false);
 
   useEffect( () => {
 fetchPosts()
@@ -30,8 +33,13 @@ fetchPosts()
   };
 
 async function fetchPosts() {
-const response = await axios.get('https://jsonplaceholder.typicode.com/posts')
-setPosts(response.data)
+  setIsPostsLoading(true);
+  setTimeout(async () => {
+    const posts = await PostService.getAll();
+    setPosts(posts)
+    setIsPostsLoading(false);
+  }, 1000)
+
 }
 
   const removePost = (post) => {
@@ -48,11 +56,17 @@ setPosts(response.data)
         </MyModal>
         <hr style={{ margin: "15px 0" }} />
         <PostFilter filter={filter} setFilter={setFilter} />
-        <PostList
-          remove={removePost}
-          posts={sortedAndSearchedPosts}
-          title="Post List 1"
-        />
+        {isPostsLoading
+        ? <div style={{display: 'flex', justifyContent: 'center', marginTop: 50}}>
+          <Loader/>
+        </div>
+        :  <PostList
+        remove={removePost}
+        posts={sortedAndSearchedPosts}
+        title="Post List 1"
+      />
+        }
+       
       </div>
     </>
   );
