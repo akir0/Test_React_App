@@ -9,6 +9,7 @@ import PostForm from "./components/PostForm";
 import MySelect from "./components/UI/select/MySelect";
 import PostFilter from "./components/PostFilter";
 import MyModal from "./components/UI/MyModal/MyModal";
+import {CSSTransition, TransitionGroup} from "react-transition-group"
 
 function App() {
   const [posts, setPosts] = useState([
